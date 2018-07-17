@@ -7,7 +7,7 @@ public class Board {
 	
 	private ArrayList<Cell> cells;
 	private int totalMines;
-	private int size; // size = 3 means there are 4 cells on the size
+	private int size; // size = 3 means there are 4 cells on the side
 	
 	// Constructor
 	

@@ -33,7 +33,7 @@ public class Board {
 	private static int[][] distributeMine (int size, int totalMines) {
 		// places one mine in a random position as long as it is not already occupied
 		int placedMines = 0;
-		int[][] mines = new int[2][totalMines];
+		int[][] mines = new int[2][totalMines + 1];
 		while (placedMines <= totalMines) {
 			Random rnd = new Random();
 			int x = rnd.nextInt(size + 1);

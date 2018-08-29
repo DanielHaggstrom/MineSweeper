@@ -28,13 +28,27 @@ public class Board {
 		}
 	}
 	
+	
+	// Dynamic Methods
+	
+
+	public Cell getCell(int x, int y) {
+		for (int i = 0; i < this.cells.size(); i++) {
+			if ((this.getCells().get(i).getPositionX() == x) && (this.getCells().get(i).getPositionY() == y)) {
+				return this.cells.get(i);
+			}
+		}
+		return null;
+	}
+	
+	
 	// Static Methods
 	
 	private static int[][] distributeMine (int size, int totalMines) {
 		// places one mine in a random position as long as it is not already occupied
 		int placedMines = 0;
-		int[][] mines = new int[2][totalMines + 1];
-		while (placedMines <= totalMines) {
+		int[][] mines = new int[2][totalMines];
+		while (placedMines < totalMines) {
 			Random rnd = new Random();
 			int x = rnd.nextInt(size + 1);
 			int y = rnd.nextInt(size + 1);
@@ -73,5 +87,6 @@ public class Board {
 	public ArrayList<Cell> getCells() {
 		return this.cells;
 	}
+	
 	
 }

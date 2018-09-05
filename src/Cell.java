@@ -60,6 +60,10 @@ public class Cell {
 		this.status = status;
 	}
 	
+	public void addSurroundingMines() {
+		this.surroundingMines++;
+	}
+	
 	
 	// Methods
 	

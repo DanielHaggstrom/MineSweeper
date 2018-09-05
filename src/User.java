@@ -41,11 +41,11 @@ public class User {
 			System.out.print("-");
 			System.out.println();
 			for (int j = 0; j < size; j++) {
-				if (board.getCell(i, j).isMine()) {
+				if (board.getCells()[i][j].isMine()) {
 					System.out.print("|x");
 				}
 				else {
-					System.out.print("| ");
+					System.out.print("|" + board.getCells()[i][j].getSurroundingMines());
 				}
 			}
 			System.out.print("|");

@@ -1,57 +1,51 @@
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Board {
 	
 	// Attributes
 	
-	private ArrayList<Cell> cells;
+	private Cell[][] cells;
 	private int totalMines;
 	private int size; // size = 3 means there are 4 cells on the side
+	// total mines must be lower than size^2 -1
 	
 	// Constructor
 	
 	Board (int size, int totalMines) {
 		this.size = size;
 		this.totalMines = totalMines;
-		this.cells = new ArrayList<Cell>();
+		this.cells = new Cell[size][size];
 		int[][] mines = Board.distributeMine(this.size, this.totalMines);
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
 				if (Board.alreadyExists(mines, i, j)) {
-					this.cells.add(new Cell(true, i, j));
+					this.cells[i][j] = new Cell(true, i, j);
 				}
 				else {
-					this.cells.add(new Cell(false, i, j));
+					this.cells[i][j] = new Cell(false, i, j);
 				}
 			}
 		}
+		Board.updateSurroundingMines(mines, cells);
 	}
 	
 	
 	// Dynamic Methods
 	
-
-	public Cell getCell(int x, int y) {
-		for (int i = 0; i < this.cells.size(); i++) {
-			if ((this.getCells().get(i).getPositionX() == x) && (this.getCells().get(i).getPositionY() == y)) {
-				return this.cells.get(i);
-			}
-		}
-		return null;
-	}
 	
 	
 	// Static Methods
 	
 	private static int[][] distributeMine (int size, int totalMines) {
-		// places one mine in a random position as long as it is not already occupied
+		// places all mines in random positions
+		// ---------------> Right now, the play (0,0) is always safe.
+		// Mines should not be able to exist outside the board
 		int placedMines = 0;
 		int[][] mines = new int[2][totalMines];
 		while (placedMines < totalMines) {
 			Random rnd = new Random();
-			int x = rnd.nextInt(size + 1);
-			int y = rnd.nextInt(size + 1);
+			int x = rnd.nextInt(size);
+			int y = rnd.nextInt(size);
 			if (!Board.alreadyExists(mines, x, y)) {
 				mines[0][placedMines] = x;
 				mines[1][placedMines] = y;
@@ -64,15 +58,42 @@ public class Board {
 	
 	private static boolean alreadyExists(int[][] array, int x, int y) {
 		// given an 2xn array, returns true if a certain pair of number are already on it
-		boolean answer = false;
 		for (int i = 0; i < array[0].length; i++) {
 			if ((array[0][i] == x) && (array[1][i] == y)) {
-				answer = true;
+				//System.out.println("salto: "+ x +", "+ y);
+				return true; //should be a while loop
 			}
 		}
-		return answer;
+		return false;
 		
 	}
+	
+	private static void updateSurroundingMines(int[][] mines, Cell[][] cells) {
+		// for every mine on the board, check surrounding cells and add +1 to surroundingMines
+		for (int i = 0; i < mines[0].length; i++) {
+			int x = mines[0][i];
+			int y = mines[1][i];
+			for (int j = x - 1; j < x + 2; j++) {
+				for (int k = y - 1; k < y + 2; k++) {
+					if (Board.isCellValid(j, k, cells.length) && !((j == x) && (k == y))) {
+						cells[j][k].addSurroundingMines();
+					}
+				}
+			}
+		}
+		
+	}
+	
+	private static boolean isCellValid(int x, int y, int size) {
+		boolean answer = true;
+		if ((x < 0) || (x > size -1) || (y < 0) || (y > size -1)) {
+			answer = false;
+		}
+		return answer;
+	}
+	
+	
+	
 	
 	// Methods - Getters
 
@@ -84,7 +105,7 @@ public class Board {
 		return size;
 	}
 	
-	public ArrayList<Cell> getCells() {
+	public Cell[][] getCells() {
 		return this.cells;
 	}
 	

@@ -12,6 +12,11 @@ public class Board {
 	// Constructor
 	
 	Board (int size, int totalMines) {
+		// First, a sanity check that the number of mines makes sense
+		if ((totalMines <= 0) || (totalMines >= size*size)) {
+			System.out.println("totalMines is not valid");
+			System.exit(1);
+		}
 		this.size = size;
 		this.totalMines = totalMines;
 		this.cells = new Cell[size][size];
@@ -38,10 +43,14 @@ public class Board {
 	
 	private static int[][] distributeMine (int size, int totalMines) {
 		// places all mines in random positions
-		// ---------------> Right now, the play (0,0) is always safe.
 		// Mines should not be able to exist outside the board
 		int placedMines = 0;
 		int[][] mines = new int[2][totalMines];
+		// Now we initialize the values to null. Otherwise the cell (0,0) would always be skipped
+		for (int i = 0; i < mines[0].length; i++) {
+			mines[0][i] = size;
+			mines[1][i] = size;
+		}
 		while (placedMines < totalMines) {
 			Random rnd = new Random();
 			int x = rnd.nextInt(size);
@@ -58,12 +67,14 @@ public class Board {
 	
 	private static boolean alreadyExists(int[][] array, int x, int y) {
 		// given an 2xn array, returns true if a certain pair of number are already on it
+		boolean answer = false;
 		for (int i = 0; i < array[0].length; i++) {
 			if ((array[0][i] == x) && (array[1][i] == y)) {
-				//System.out.println("salto: "+ x +", "+ y);
-				return true; //should be a while loop
+				answer = true;
+				break;
 			}
 		}
+		
 		return false;
 		
 	}
@@ -85,6 +96,7 @@ public class Board {
 	}
 	
 	private static boolean isCellValid(int x, int y, int size) {
+		// checks that a cell is within the board
 		boolean answer = true;
 		if ((x < 0) || (x > size -1) || (y < 0) || (y > size -1)) {
 			answer = false;

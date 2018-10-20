@@ -3,6 +3,7 @@ This is application will consist of a game of Minesweeper and a solver (which us
 
 
 TO DO:
+
 1 Create a playable version of Minesweeper
 
 1.1 Rewrite comments using javadoc

@@ -5,12 +5,16 @@ public class Board {
 	// Attributes
 	
 	private Cell[][] cells;
-	private int totalMines;
+	private int totalMines;// total mines must be lower than size^2 -1
 	private int size; // size = 3 means there are 4 cells on the side
-	// total mines must be lower than size^2 -1
+	
 	
 	// Constructor
-	
+	/**
+	 * Constructs a new board.
+	 * @param size int, is the length of the size (the board is square). size = 3 means the board has a side of 4 cells.
+	 * @param totalMines int, is the number of mines there are distributed in the board.
+	 */
 	Board (int size, int totalMines) {
 		// First, a sanity check that the number of mines makes sense
 		if ((totalMines <= 0) || (totalMines >= size*size)) {

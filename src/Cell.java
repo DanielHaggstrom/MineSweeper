@@ -10,7 +10,12 @@ public class Cell {
 	private int positionY;
 	
 	// Constructor
-	
+	/**
+	 * Constructs a new Cell.
+	 * @param mine boolean, true if the new cell should contain a mine, false otherwise.
+	 * @param positionX int, the position of the cell in the x-axis. Should be higher than or equal to 0 and lower than the size of the {@link Board}.
+	 * @param positionY int, the position of the cell in the y-axis. Should be higher than or equal to 0 and lower than the size of the {@link Board}.
+	 */
 	Cell (boolean mine, int positionX, int positionY) {
 		this.mine = mine;
 		this.positionX = positionX;
@@ -18,54 +23,75 @@ public class Cell {
 		this.status = 0;
 	}
 	
-	// Methods - Setters and Getters
+	// Methods
 	
+	/**
+	 * Checks if the cell contains a mine.
+	 * @return True if and only if the cell contains a mine.
+	 */
 	public boolean isMine() {
 		return mine;
 	}
-
+	/* there should be no reason to use this method other than debugging.
 	public void setMine(boolean mine) {
 		this.mine = mine;
 	}
-
+	*/
+	
+	/**
+	 * Indicates how many of the surrounding cells contain a mine.
+	 * @return an integer amount of mines that are contiguous to the cell, including diagonals.
+	 */
 	public int getSurroundingMines() {
 		return surroundingMines;
 	}
-
+	/* there should be no reason to use this method other than debugging.
 	public void setSurroundingMines(int surroundingMines) {
 		this.surroundingMines = surroundingMines;
 	}
-
+	*/
+	
+	/* there should be no reason to use this method other than debugging.
 	public int getPositionX() {
 		return positionX;
 	}
-
+	*/
+	/* there should be no reason to use this method other than debugging.
 	public void setPositionX(int positionX) {
 		this.positionX = positionX;
 	}
-
+	*/
+	/* there should be no reason to use this method other than debugging.
 	public int getPositionY() {
 		return positionY;
 	}
-
+	*/
+	/* there should be no reason to use this method other than debugging.
 	public void setPositionY(int positionY) {
 		this.positionY = positionY;
 	}
-
+	*/
+	/**
+	 * Shows the status of the cell.
+	 * @return  0 if hidden, 1 if flagged, and 2 if revealed.
+	 */
 	public int getStatus() {
 		return status;
 	}
-
+	/* there should be no reason to use this method other than debugging.
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
+	*/
+	/**
+	 * Adds 1 to the number of surrounding mines.
+	 */
 	public void addSurroundingMines() {
 		this.surroundingMines++;
 	}
 	
 	
-	// Methods
+	// Private Methods
 	
 
 }

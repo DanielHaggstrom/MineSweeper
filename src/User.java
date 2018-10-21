@@ -6,7 +6,10 @@ public class User {
 	
 	
 	// All functions are static
-	
+	/**
+	 * Shows the board as seen by the user. Revealed cells show the surrounding mines, flagged cells show '!' and if a mine is hit, is shows 'x'. All other cells are blank.
+	 * @param board
+	 */
 	public static void showBoard(Board board) {
 		int size = board.getSize();
 		System.out.println();
@@ -30,7 +33,10 @@ public class User {
 		System.out.print("-");
 		System.out.println();
 	}
-	
+	/**
+	 * Shows the debugging board.
+	 * @param board
+	 */
 	public static void showTrueBoard(Board board) {
 		int size = board.getSize();
 		System.out.println();

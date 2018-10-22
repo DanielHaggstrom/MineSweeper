@@ -92,7 +92,7 @@ public class Board {
 		return answer;
 		
 	}
-	// May not make much sense. This will add one to every mine on the board, not just the last one? The main seems to work, though.
+	// Only to be used once.
 	private static void updateSurroundingMines(int[][] mines, Cell[][] cells) {
 		// for every mine on the board, check surrounding cells and add +1 to surroundingMines
 		for (int i = 0; i < mines[0].length; i++) {
@@ -108,18 +108,20 @@ public class Board {
 		}
 		
 	}
-	
+	/**
+	 * Checks that a cell is within the board
+	 * @param x
+	 * @param y
+	 * @param size
+	 * @return True if and only if the cell exists in the board.
+	 */
 	private static boolean isCellValid(int x, int y, int size) {
-		// checks that a cell is within the board
 		boolean answer = true;
 		if ((x < 0) || (x > size -1) || (y < 0) || (y > size -1)) {
 			answer = false;
 		}
 		return answer;
 	}
-	
-	
-	
 	
 	// Methods - Getters
 

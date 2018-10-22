@@ -22,7 +22,15 @@ public class User {
 			System.out.print("-");
 			System.out.println();
 			for (int j = 0; j < size; j++) {
-				System.out.print("| ");
+				if (board.getCells()[i][j].getStatus() == 0) {
+					System.out.print("| ");
+				}
+				else if (board.getCells()[i][j].getStatus() == 1) {
+					System.out.print("|!");
+				}
+				else {
+					System.out.print("|"+ board.getCells()[i][j].getSurroundingMines());
+				}
 			}
 			System.out.print("|");
 			System.out.println();
@@ -97,5 +105,55 @@ public class User {
 		return answer;
 	}
 	
-
+	/**
+	 * Obtain a cell selected by the user in order to perform an action on it.
+	 * @param board Board, the board the user is playing on.
+	 * @param action integer. 0 is to unflag, 1 is to flag, and 2 is to reveal.
+	 * @return an array of integer. the 0 index contains the x-coordinate and the 1 index contains the y-coordinate.
+	 */
+	public static int[] selectCell(Board board, int action) {
+		int[] answer = new int[2];
+		boolean correct = false;
+		while(!correct) {
+			answer[0] = User.getCoordinate("x", board);
+			answer[1] = User.getCoordinate("y", board);
+			if (board.getCells()[answer[0]][answer[1]].isChangeValid(action)) {
+				correct = true;
+			}
+			else {
+				System.out.println("The cell selected cannot perform the action.");
+			}
+		}
+		return answer;
+	}
+	
+	/**
+	 * Gets a coordinate of a cell, selected by the user to perform an action on it.
+	 * @param s String, the name of the coordinate.
+	 * @param board Board, the board the user is playing on.
+	 * @return An integer.
+	 */
+	public static int getCoordinate(String s, Board board) {
+		boolean correct = false;
+		int answer = -1;
+		while(!correct) {
+			System.out.println("Input "+ s +"-coordinate.");
+			try {
+				Scanner sc = new Scanner(System.in);
+				int y = sc.nextInt();
+				if ((y >= 0) && (y < board.getSize())) {
+					correct = true;
+					answer = y;
+				}
+				else {
+					System.out.println("Unvalid Selection.");
+				}
+			}
+			catch (InputMismatchException ex) {
+				System.out.println("Unvalid Selection.");
+			}
+		}
+		return answer;
+	}
+	
 }

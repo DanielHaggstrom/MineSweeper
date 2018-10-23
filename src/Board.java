@@ -39,6 +39,52 @@ public class Board {
 		}
 		Board.updateSurroundingMines(mines, cells);
 	}
+	/**
+	 * Checks if the game is over.
+	 * @return True if the player revealed a mine or if there are no more blank cells. False otherwise.
+	 */
+	public boolean isGameFinished() {
+		return this.playerLost() || this.playerWon();
+	}
+	
+	/**
+	 * Checks if a player revealed a cell with a mine.
+	 * @return true if a player revealed a mined cell.
+	 */
+	public boolean playerLost() {
+		boolean answer = false;
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				if (this.cells[i][j].getStatus() == 2 && this.cells[i][j].isMine()) {
+					answer = true;
+					break;
+				}
+			}
+			if (answer) {
+				break;
+			}
+		}
+		return answer;
+	}
+	/**
+	 * Checks if a player won.
+	 * @return True if there are no more blank cells and the player did not lose.
+	 */
+	public boolean playerWon() {
+		boolean answer = true;
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				if (this.cells[i][j].getStatus() == 0) {
+					answer = false;
+					break;
+				}
+			}
+			if (!answer) {
+				break;
+			}
+		}
+		return answer && !this.playerLost();
+	}
 	
 	// Static Methods
 	

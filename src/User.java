@@ -22,17 +22,18 @@ public class User {
 			System.out.print("-");
 			System.out.println();
 			for (int j = 0; j < size; j++) {
-				if (board.getCells()[i][j].getStatus() == 0) {
+				Cell cell = board.getCells()[i][j];
+				if (cell.getStatus() == 0) {
 					System.out.print("| ");
 				}
-				else if (board.getCells()[i][j].getStatus() == 1) {
+				else if (cell.getStatus() == 1) {
 					System.out.print("|!");
 				}
-				else if (board.getCells()[i][j].isMine()){
+				else if (cell.isMine()){
 					System.out.print("|x");
 				}
 				else {
-					System.out.print("|"+ board.getCells()[i][j].getSurroundingMines());
+					System.out.print("|"+ cell.getSurroundingMines());
 				}
 			}
 			System.out.print("|");
@@ -59,11 +60,12 @@ public class User {
 			System.out.print("-");
 			System.out.println();
 			for (int j = 0; j < size; j++) {
-				if (board.getCells()[i][j].isMine()) {
+				Cell cell = board.getCells()[i][j];
+				if (cell.isMine()) {
 					System.out.print("|x");
 				}
 				else {
-					System.out.print("|" + board.getCells()[i][j].getSurroundingMines());
+					System.out.print("|" + cell.getSurroundingMines());
 				}
 			}
 			System.out.print("|");
@@ -98,11 +100,11 @@ public class User {
 					correct = true;
 				}
 				else {
-					System.out.println("Unvalid Selection.");
+					System.out.println("Invalid Selection.");
 				}
 			}
 			catch (InputMismatchException ex) {
-				System.out.println("Unvalid Selection.");
+				System.out.println("Invalid Selection.");
 			}
 		}
 		return answer;
@@ -172,11 +174,11 @@ public class User {
 					answer = y;
 				}
 				else {
-					System.out.println("Unvalid Selection.");
+					System.out.println("Invalid Selection.");
 				}
 			}
 			catch (InputMismatchException ex) {
-				System.out.println("Unvalid Selection.");
+				System.out.println("Invalid Selection.");
 			}
 		}
 		return answer;
@@ -184,7 +186,7 @@ public class User {
 	
 	public static void action(Board board) {
 		String[] menu = new String[4];
-		menu[0] = "Select an accion:";
+		menu[0] = "Select an action:";
 		menu[1] = "Reveal a cell.";
 		menu[2] = "Flag a cell.";
 		menu[3] = "Unflag a cell";

@@ -146,8 +146,13 @@ public class Board {
 			int y = mines[1][i];
 			for (int j = x - 1; j < x + 2; j++) {
 				for (int k = y - 1; k < y + 2; k++) {
-					if (Board.isCellValid(j, k, cells.length) && !((j == x) && (k == y))) {
-						cells[j][k].addSurroundingMines();
+					try {
+						Board.checkCell(j, k, cells.length);
+						if (!((j == x) && (k == y))) {
+							cells[j][k].addSurroundingMines();
+						}
+					}
+					catch (noSuchCellException ex) {
 					}
 				}
 			}
@@ -161,12 +166,14 @@ public class Board {
 	 * @param size
 	 * @return True if and only if the cell exists in the board.
 	 */
-	private static boolean isCellValid(int x, int y, int size) {
+	private static void checkCell(int x, int y, int size) throws noSuchCellException {
 		boolean answer = true;
 		if ((x < 0) || (x > size -1) || (y < 0) || (y > size -1)) {
 			answer = false;
 		}
-		return answer;
+		if (!answer){
+			throw new noSuchCellException();
+		}
 	}
 	
 	// Methods - Getters

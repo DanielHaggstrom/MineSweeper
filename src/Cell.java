@@ -51,21 +51,19 @@ public class Cell {
 	}
 	*/
 	
-	/* there should be no reason to use this method other than debugging.
+
 	public int getPositionX() {
 		return positionX;
 	}
-	*/
 	/* there should be no reason to use this method other than debugging.
 	public void setPositionX(int positionX) {
 		this.positionX = positionX;
 	}
 	*/
-	/* there should be no reason to use this method other than debugging.
+
 	public int getPositionY() {
 		return positionY;
 	}
-	*/
 	/* there should be no reason to use this method other than debugging.
 	public void setPositionY(int positionY) {
 		this.positionY = positionY;

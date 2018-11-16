@@ -4,10 +4,10 @@ This is application will consist of a game of Minesweeper and a solver (which us
 
 TO DO:
 
-1.1 Rewrite comments using javadoc
+1.1 Improve code readability.
 
 1.2 Implement autoReveal method
 
-1.3 Improve the main.
+1.3 Implement exceptions.
   
 2 Create the solver

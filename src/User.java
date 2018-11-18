@@ -29,9 +29,6 @@ public class User {
 				else if (cell.getStatus() == 1) {
 					System.out.print("|!");
 				}
-				else if (cell.isMine()){
-					System.out.print("|x");
-				}
 				else {
 					System.out.print("|"+ cell.getSurroundingMines());
 				}

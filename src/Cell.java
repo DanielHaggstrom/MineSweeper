@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Cell {
 	
@@ -8,6 +9,7 @@ public class Cell {
 	private int surroundingMines;
 	private int positionX;
 	private int positionY;
+	private ArrayList<Cell> neighbours;
 	
 	// Constructor
 	/**
@@ -21,6 +23,7 @@ public class Cell {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.status = 0;
+		this.neighbours = new ArrayList<>();
 	}
 	
 	// Methods
@@ -45,55 +48,37 @@ public class Cell {
 	public int getSurroundingMines() {
 		return surroundingMines;
 	}
-	/* there should be no reason to use this method other than debugging.
-	public void setSurroundingMines(int surroundingMines) {
-		this.surroundingMines = surroundingMines;
-	}
-	*/
 	
 
 	public int getPositionX() {
 		return positionX;
 	}
-	/* there should be no reason to use this method other than debugging.
-	public void setPositionX(int positionX) {
-		this.positionX = positionX;
-	}
-	*/
 
 	public int getPositionY() {
 		return positionY;
 	}
-	/* there should be no reason to use this method other than debugging.
-	public void setPositionY(int positionY) {
-		this.positionY = positionY;
-	}
-	*/
+
 	/**
 	 * Shows the status of the cell.
+	 * 0 -> hidden	1-> flagged	2 -> shown
 	 * @return  0 if hidden, 1 if flagged, and 2 if revealed.
 	 */
 	public int getStatus() {
 		return status;
 	}
-	/* there should be no reason to use this method other than debugging.
-	public void setStatus(int status) {
-		this.status = status;
-	}
-	*/
-	/**
-	 * Adds 1 to the number of surrounding mines.
-	 */
-	public void addSurroundingMines() {
-		this.surroundingMines++;
-	}
+
 	
 	public boolean reveal() {
 		boolean answer = this.isChangeValid(2);
 		if (answer) {
 			this.status = 2;
+			this.autoReveal();
 		}
 		return answer;
+	}
+
+	public void addNeighbour(Cell cell){
+		this.neighbours.add(cell);
 	}
 	
 	public boolean flag() {
@@ -131,4 +116,30 @@ public class Cell {
 		return answer;
 	}
 
+	public ArrayList<Cell> getNeighbours(){
+		return this.neighbours;
+	}
+
+	public void updateSurroundingMines(){
+		int total = 0;
+		for (int i = 0; i < this.getNeighbours().size(); i++) {
+			Cell neighbour = this.getNeighbours().get(i);
+			if (neighbour.isMine()){
+				total++;
+			}
+		}
+		this.surroundingMines = total;
+	}
+
+	private void autoReveal(){
+		for (int i = 0; i < this.neighbours.size(); i++) {
+			Cell neighbour = this.neighbours.get(i);
+			if (neighbour.getStatus() == 0){
+				neighbour.reveal();
+				if (neighbour.getSurroundingMines() == 0){
+					neighbour.autoReveal();
+				}
+			}
+		}
+	}
 }

@@ -37,7 +37,8 @@ public class Board {
 				}
 			}
 		}
-		Board.updateSurroundingMines(mines, cells);
+		Board.updateNeighbours(cells, size);
+		Board.updateSurroundingMines(cells);
 	}
 	/**
 	 * Checks if the game is over.
@@ -85,7 +86,7 @@ public class Board {
 		}
 		return answer && !this.playerLost();
 	}
-	
+
 	// Static Methods
 	
 	/**
@@ -119,6 +120,7 @@ public class Board {
 		return mines;
 	
 	}
+
 	/**
 	 * Given an 2xn array, returns true if a certain pair of number are already on it.
 	 * @param array
@@ -138,27 +140,37 @@ public class Board {
 		return answer;
 		
 	}
-	// Only to be used once.
-	private static void updateSurroundingMines(int[][] mines, Cell[][] cells) {
-		// for every mine on the board, check surrounding cells and add +1 to surroundingMines
-		for (int i = 0; i < mines[0].length; i++) {
-			int x = mines[0][i];
-			int y = mines[1][i];
-			for (int j = x - 1; j < x + 2; j++) {
-				for (int k = y - 1; k < y + 2; k++) {
-					try {
-						Board.checkCell(j, k, cells.length);
-						if (!((j == x) && (k == y))) {
-							cells[j][k].addSurroundingMines();
+
+	private static void updateSurroundingMines(Cell[][] cells) {
+		for (int i = 0; i < cells[0].length; i++) {
+			for (int j = 0; j < cells[0].length; j++) {
+				cells[i][j].updateSurroundingMines();
+			}
+		}
+	}
+
+	//only to be used once
+	public static void updateNeighbours(Cell[][] cells, int size){
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				Cell cell = cells[i][j];
+				for (int x = i -1; x < i +2; x++) {
+					for (int y = j -1; y < j +2; y++) {
+						if (i != x || j != y){
+							try {
+								Board.checkCell(x, y, size);
+								cell.addNeighbour(cells[x][y]);
+							}
+							catch (NoSuchCellException ex){
+
+							}
 						}
-					}
-					catch (noSuchCellException ex) {
 					}
 				}
 			}
 		}
-		
 	}
+
 	/**
 	 * Checks that a cell is within the board
 	 * @param x
@@ -166,13 +178,13 @@ public class Board {
 	 * @param size
 	 * @return True if and only if the cell exists in the board.
 	 */
-	private static void checkCell(int x, int y, int size) throws noSuchCellException {
+	private static void checkCell(int x, int y, int size) throws NoSuchCellException {
 		boolean answer = true;
 		if ((x < 0) || (x > size -1) || (y < 0) || (y > size -1)) {
 			answer = false;
 		}
 		if (!answer){
-			throw new noSuchCellException();
+			throw new NoSuchCellException();
 		}
 	}
 	

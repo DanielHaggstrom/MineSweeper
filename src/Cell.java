@@ -72,7 +72,9 @@ public class Cell {
 		boolean answer = this.isChangeValid(2);
 		if (answer) {
 			this.status = 2;
-			this.autoReveal();
+			if (this.surroundingMines == 0){
+				this.autoReveal();
+			}
 		}
 		return answer;
 	}

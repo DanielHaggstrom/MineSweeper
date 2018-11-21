@@ -29,7 +29,7 @@ public class User {
 				else if (cell.getStatus() == 1) {
 					System.out.print("|!");
 				}
-				else {
+				else if (cell.getStatus() == 2){
 					System.out.print("|"+ cell.getSurroundingMines());
 				}
 			}

@@ -145,4 +145,7 @@ public class Cell {
 			}
 		}
 	}
+
+	public void performAction(int action) {
+	}
 }

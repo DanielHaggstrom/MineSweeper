@@ -26,7 +26,6 @@ public interface API {
 	 * Performs an action in the cell
 	 * @return An integer: 0 -> Unflag, 1 -> Flag, 2 -> Reveal
 	 */
-
 	public int action();
 
 

@@ -128,11 +128,11 @@ public class User implements API{
 				int coordinate = sc.nextInt();
 				try {
 					Board.checkCell(coordinate, 0, this.board.getSize());
+					correct = true;
+					answer = coordinate;
 				}
 				catch (NoSuchCellException ex){
 					System.out.println("Invalid Selection.");
-					correct = true;
-					answer = coordinate;
 				}
 			}
 			catch (InputMismatchException ex) {

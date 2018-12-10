@@ -31,10 +31,6 @@ public class Board {
 		}
 	}
 
-	public void performAction() {
-		//TODO
-	}
-
 	/**
 	 * Checks if the game is over.
 	 * @return True if the player revealed a mine or if there are no more blank cells. False otherwise.
@@ -205,6 +201,7 @@ public class Board {
 	public Cell[][] getCells() {
 		return this.cells;
 	}
-	
+
+
 	
 }

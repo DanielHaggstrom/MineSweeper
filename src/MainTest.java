@@ -1,19 +1,27 @@
 
-public class MainTest<T> {
+public class MainTest<T extends API> {
 
 	public static void main(String[] args) {
 		// this main is for testing purposes
 		
 		int size = 10;
 		int mines = 20;
-		int[] first = User.firstCell(size);
-		Board board = new Board(size, mines, first[0], first[1]);
-		board.getCells()[first[0]][first[1]].reveal();
+		Board board = new Board(size, mines);
+		User user = new User(board);// use generics
+		Cell first = user.firstCell();
+		board.distributeMines(first.getPositionX(), first.getPositionY());
+		board.getCells()[first.getPositionX()][first.getPositionY()].reveal();
 		boolean finished = false;
 		while(!finished) {
-			User.showBoard(board);
-			User.showTrueBoard(board);
-			User.action(board);
+
+			//TODO
+			user.showBoard();
+			user.showTrueBoard();
+			Cell selectedCell = user.selectCell();
+			int action = user.action();
+
+			board.performAction();
+
 			if (board.isGameFinished()) {
 				finished = true;
 			}

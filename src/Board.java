@@ -14,10 +14,8 @@ public class Board {
 	 * Constructs a new Board. The first cell chosen by the user should be safe.
 	 * @param size is the length of the side (the board is a square). 3 means the side has 4 cells.
 	 * @param totalMines int the maximum amount of mines.
-	 * @param safeX int is the x coordinate of the first chosen cell.
-	 * @param safeY int is the y coordinate of the first chosen cell.
 	 */
-	Board (int size, int totalMines, int safeX, int safeY) {
+	Board (int size, int totalMines) {
 		// First, a sanity check that the number of mines makes sense
 		if ((totalMines <= 0) || (totalMines >= size*size)) {
 			System.out.println("totalMines is not valid");
@@ -26,20 +24,17 @@ public class Board {
 		this.size = size;
 		this.totalMines = totalMines;
 		this.cells = new Cell[size][size];
-		int[][] mines = Board.distributeMine(this.size, this.totalMines, safeX, safeY);
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
-				if (Board.alreadyExists(mines, i, j)) {
-					this.cells[i][j] = new Cell(true, i, j);
-				}
-				else {
-					this.cells[i][j] = new Cell(false, i, j);
-				}
+				this.cells[i][j] = new Cell(false, i, j);
 			}
 		}
-		Board.updateNeighbours(cells, size);
-		Board.updateSurroundingMines(cells);
 	}
+
+	public void performAction() {
+		//TODO
+	}
+
 	/**
 	 * Checks if the game is over.
 	 * @return True if the player revealed a mine or if there are no more blank cells. False otherwise.
@@ -95,34 +90,39 @@ public class Board {
 	
 	/**
 	 * Places mines into random positions on the board.
-	 * @param size int is the side length of the board.
-	 * @param totalMines int is the amount of mines there should be.
 	 * @param safeX int is the x coordinate of the first chosen cell.
 	 * @param safeY int is the y coordinate of the first chosen cell.
 	 * @return an array with the coordinates of the mines.
 	 */
-	private static int[][] distributeMine (int size, int totalMines, int safeX, int safeY) {
+	public void distributeMines (int safeX, int safeY) {
 		// places all mines in random positions
 		// Mines should not be able to exist outside the board
 		int placedMines = 0;
-		int[][] mines = new int[2][totalMines];
+		int[][] mines = new int[2][this.totalMines];
 		// Now we initialize the values to size (which will never occur naturally). Otherwise the cell (0,0) would always be skipped
 		for (int i = 0; i < mines[0].length; i++) {
-			mines[0][i] = size;
-			mines[1][i] = size;
+			mines[0][i] = this.size;
+			mines[1][i] = this.size;
 		}
-		while (placedMines < totalMines) {
+		while (placedMines < this.totalMines) {
 			Random rnd = new Random();
-			int x = rnd.nextInt(size);
-			int y = rnd.nextInt(size);
+			int x = rnd.nextInt(this.size);
+			int y = rnd.nextInt(this.size);
 			if (!Board.alreadyExists(mines, x, y) && ((x != safeX) || (y != safeY))) {
 				mines[0][placedMines] = x;
 				mines[1][placedMines] = y;
 				placedMines++;
 			}
 		}
-		return mines;
-	
+		for (int i = 0; i < this.size; i++) {
+			for (int j = 0; j < this.size; j++) {
+				if (Board.alreadyExists(mines, i, j)) {
+					this.cells[i][j].setMine(true);
+				}
+			}
+		}
+		Board.updateNeighbours(cells, size);
+		Board.updateSurroundingMines(cells);
 	}
 
 	/**

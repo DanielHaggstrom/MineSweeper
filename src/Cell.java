@@ -37,11 +37,10 @@ public class Cell {
 	public boolean isMine() {
 		return mine;
 	}
-	/* there should be no reason to use this method other than debugging.
+
 	public void setMine(boolean mine) {
 		this.mine = mine;
 	}
-	*/
 	
 	/**
 	 * Indicates how many of the surrounding cells contain a mine.

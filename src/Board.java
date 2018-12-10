@@ -87,6 +87,10 @@ public class Board {
 		return answer && !this.playerLost();
 	}
 
+	public Cell getCell(int x, int y){
+		return this.cells[x][y];
+	}
+
 	// Static Methods
 	
 	/**
@@ -178,7 +182,7 @@ public class Board {
 	 * @param size
 	 * @return True if and only if the cell exists in the board.
 	 */
-	private static void checkCell(int x, int y, int size) throws NoSuchCellException {
+	public static void checkCell(int x, int y, int size) throws NoSuchCellException {
 		boolean answer = true;
 		if ((x < 0) || (x > size -1) || (y < 0) || (y > size -1)) {
 			answer = false;

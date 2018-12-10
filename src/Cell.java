@@ -25,6 +25,8 @@ public class Cell {
 		this.status = 0;
 		this.neighbours = new ArrayList<>();
 	}
+
+
 	
 	// Methods
 	

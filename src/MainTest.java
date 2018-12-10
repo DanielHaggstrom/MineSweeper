@@ -1,5 +1,5 @@
 
-public class MainTest {
+public class MainTest<T> {
 
 	public static void main(String[] args) {
 		// this main is for testing purposes

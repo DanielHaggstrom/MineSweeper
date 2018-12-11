@@ -20,7 +20,8 @@ public class Game <T extends API>{
 			user.showBoard();
 			user.showTrueBoard();//debug
 			Game.checkStatus(board);
-			while (true){
+			boolean isActionCorrect = false;
+			while (!isActionCorrect){
 				Cell selectedCell = user.selectCell();
 				int action = user.action();
 				if (selectedCell.isChangeValid(action)){
@@ -35,7 +36,7 @@ public class Game <T extends API>{
 							selectedCell.reveal();
 							break;
 					}
-					break;
+					isActionCorrect = true;
 				}
 				else {
 					System.out.println("Incorrect Action");

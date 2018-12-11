@@ -6,8 +6,8 @@ TO DO:
 
 1.1 Improve code readability.
 
-1.2 Implement autoReveal method
+1.2 use `for (int row = 0; row < COLS && !found; ++row)` trick.
 
-1.3 Implement exceptions.
+1.3 Create the graphic user
   
 2 Create the solver

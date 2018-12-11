@@ -11,9 +11,8 @@ public class User implements API{
 
 	public void showBoard() {
 		int size = this.board.getSize();
+
 		System.out.println();
-		
-		
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
 				System.out.print("--");
@@ -21,7 +20,7 @@ public class User implements API{
 			System.out.print("-");
 			System.out.println();
 			for (int j = 0; j < size; j++) {
-				Cell cell = board.getCells()[i][j];
+				Cell cell = board.getCell(i, j);
 				if (cell.getStatus() == 0) {
 					System.out.print("| ");
 				}

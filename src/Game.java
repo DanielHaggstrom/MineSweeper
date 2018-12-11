@@ -4,8 +4,8 @@ public class Game <T extends API>{
 	private boolean finished;
 	private boolean win;
 
-	Game(int size, int totalMines, T user){
-		this.board = new Board(size, totalMines);
+	Game(Board board, T user){
+		this.board = board;
 		this.user = user;
 		user.showBoard();
 		Cell first = user.firstCell();
@@ -19,6 +19,7 @@ public class Game <T extends API>{
 		while (!finished){
 			user.showBoard();
 			user.showTrueBoard();//debug
+			Game.checkStatus(board);
 			while (true){
 				Cell selectedCell = user.selectCell();
 				int action = user.action();
@@ -50,5 +51,32 @@ public class Game <T extends API>{
 	}
 	public boolean winner(){
 		return this.win;
+	}
+
+	public static void checkStatus(Board board){
+		int hidden = 0;
+		int flagged = 0;
+		int shown = 0;
+		int mines = 0;
+		for (int i = 0; i < board.getSize(); i++) {
+			for (int j = 0; j < board.getSize(); j++) {
+				Cell cell = board.getCells()[i][j];
+				if (cell.isMine()){
+					mines++;
+				}
+				switch (cell.getStatus()){
+					case 0:
+						hidden++;
+						break;
+					case 1:
+						flagged++;
+						break;
+					case 2:
+						shown++;
+						break;
+				}
+			}
+		}
+		System.out.println("Hidden "+ hidden +" | Flagged: "+ flagged +" | Shown: "+ shown +" | Mines: " + mines);
 	}
 }

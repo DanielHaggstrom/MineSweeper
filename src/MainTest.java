@@ -7,8 +7,10 @@ public class MainTest {
 		int size = 3;
 		int mines = 1;
 		Board board = new Board(size, mines);
-		User user = new User(board);
-		Game<User> game = new Game<>(board, user);
+		//User user = new User(board);
+		GraphUser user = new GraphUser(board);
+		//Game<User> game = new Game<>(board, user);
+		Game<GraphUser> game = new Game<>(board, user);
 		game.play();
 		if (game.winner()){
 			System.out.println("Congratulations!");

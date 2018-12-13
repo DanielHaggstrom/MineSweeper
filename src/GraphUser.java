@@ -1,20 +1,24 @@
+import gameCore.API;
+import gameCore.Board;
+import gameCore.Cell;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
 public class GraphUser extends JFrame implements API {
 	// constants
-	private static final int CELL_SIZE = 60;  // Cell width and height, in pixels
-	private static final Color BGCOLOR_NOT_REVEALED = Color.GREEN;
-	private static final Color FGCOLOR_NOT_REVEALED = Color.RED;    // flag
-	private static final Color BGCOLOR_REVEALED = Color.DARK_GRAY;
-	private static final Color FGCOLOR_REVEALED = Color.LIGHT_GRAY; // number of mines
-	private static final Font FONT_NUMBERS = new Font("Monospaced", Font.BOLD, 20);
+	private int CELL_SIZE = 60;  // gameCore.Cell width and height, in pixels
+	private Color BGCOLOR_NOT_REVEALED = Color.GREEN;
+	private Color FGCOLOR_NOT_REVEALED = Color.RED;    // flag
+	private Color BGCOLOR_REVEALED = Color.DARK_GRAY;
+	private Color FGCOLOR_REVEALED = Color.LIGHT_GRAY; // number of mines
+	private Font FONT_NUMBERS = new Font("Monospaced", Font.BOLD, 20);
 
 	private int COLS;
 
-	private final int CANVAS_WIDTH = CELL_SIZE * COLS; // Game board width/height
-	private final int CANVAS_HEIGHT = CELL_SIZE * COLS;
+	private int CANVAS_WIDTH; // gameCore.Game board width/height
+	private int CANVAS_HEIGHT;
 
 	private Board board;
 
@@ -26,6 +30,8 @@ public class GraphUser extends JFrame implements API {
 	GraphUser(Board board){
 		this.board = board;
 		this.COLS = board.getSize();
+		this.CANVAS_WIDTH = CELL_SIZE * COLS;
+		this.CANVAS_HEIGHT = CELL_SIZE * COLS;
 		Container cp = this.getContentPane();
 		cp.setLayout(new GridLayout(COLS, COLS, 2, 2));
 		this.btnCells  = new JButton[COLS][COLS];
@@ -39,8 +45,14 @@ public class GraphUser extends JFrame implements API {
 				btnCells[row][col] = new JButton();  // Allocate each JButton of the array
 				cp.add(btnCells[row][col]);          // add to content-pane in GridLayout
 				btnCells[row][col].addMouseListener(listener);
+				btnCells[row][col].setEnabled(true);  // enable button
+				btnCells[row][col].setForeground(FGCOLOR_NOT_REVEALED);
+				btnCells[row][col].setBackground(BGCOLOR_NOT_REVEALED);
+				btnCells[row][col].setFont(FONT_NUMBERS);
+				btnCells[row][col].setText("");       // display blank
 			}
 		}
+
 		// Set the size of the content-pane and pack all the components
 		//  under this container.
 		cp.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
@@ -87,6 +99,12 @@ public class GraphUser extends JFrame implements API {
 	@Override
 	public Cell selectCell() {
 		while (!this.listener.getAuxButton()){
+			try {
+				Thread.sleep(1000);
+				System.out.println("debug");
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 		this.listener.setAuxButton(false);
 		int x = this.listener.getAuxCell()[0];
@@ -107,7 +125,10 @@ public class GraphUser extends JFrame implements API {
 		int status = cell.getStatus();
 		while (true){
 			if (this.listener.isClick()){
-				if (status == 0){
+				if (status == 0){// reveal a hidden cell
+					btnCells[x][y].setForeground(FGCOLOR_REVEALED);
+					btnCells[x][y].setBackground(BGCOLOR_REVEALED);
+					btnCells[x][y].setText("" + cell.getSurroundingMines());
 					return 2;
 				}
 			}
@@ -146,6 +167,7 @@ public class GraphUser extends JFrame implements API {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			this.auxCell = new int[2];
 			// Determine the (row, col) of the JButton that triggered the event
 
 			// Get the source object that fired the Event
@@ -157,6 +179,7 @@ public class GraphUser extends JFrame implements API {
 					if (source == btnCells[row][col]) {
 						this.auxCell[0] = row;
 						this.auxCell[1] = col;
+						this.auxButton = true;
 						found = true;   // break both inner/outer loops
 					}
 				}

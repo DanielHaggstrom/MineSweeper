@@ -1,9 +1,10 @@
+package gameCore;
+
 import java.util.Random;
 
 public class Board {
 	
 	// Attributes
-	
 	private Cell[][] cells;
 	private int totalMines;// total mines must be lower than size^2 -1
 	private int size; // size = 3 means there are 4 cells on the side
@@ -11,11 +12,11 @@ public class Board {
 	
 	// Constructor
 	/**
-	 * Constructs a new Board. The first cell chosen by the user should be safe.
-	 * @param size is the length of the side (the board is a square). 3 means the side has 4 cells.
-	 * @param totalMines int the maximum amount of mines.
+	 * Constructs a new gameCore.Board.
+	 * @param size is the length of the side (the board is a square). Size 3 means the side has 4 cells.
+	 * @param totalMines int the amount of mines.
 	 */
-	Board (int size, int totalMines) {
+	public Board(int size, int totalMines) {
 		// First, a sanity check that the number of mines makes sense
 		if ((totalMines <= 0) || (totalMines >= size*size)) {
 			System.out.println("totalMines is not valid");
@@ -26,9 +27,23 @@ public class Board {
 		this.cells = new Cell[size][size];
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
-				this.cells[i][j] = new Cell(false, i, j);
+				this.cells[i][j] = new Cell(i, j);
 			}
 		}
+	}
+
+	// Methods - Getters
+
+	public int getTotalMines() {
+		return totalMines;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public Cell[][] getCells() {
+		return this.cells;
 	}
 
 	/**
@@ -43,62 +58,58 @@ public class Board {
 	 * Checks if a player revealed a cell with a mine.
 	 * @return true if a player revealed a mined cell.
 	 */
-	public boolean playerLost() {
+	private boolean playerLost() {
 		boolean answer = false;
-		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < size; j++) {
+		for (int i = 0; i < size && !answer; i++) {
+			for (int j = 0; j < size && !answer; j++) {
 				if (this.cells[i][j].getStatus() == 2 && this.cells[i][j].isMine()) {
 					answer = true;
-					break;
 				}
-			}
-			if (answer) {
-				break;
 			}
 		}
 		return answer;
 	}
+
 	/**
 	 * Checks if a player won.
 	 * @return True if there are no more blank cells and the player did not lose.
 	 */
 	public boolean playerWon() {
 		boolean answer = true;
-		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < size; j++) {
+		for (int i = 0; i < size && answer; i++) {
+			for (int j = 0; j < size && answer; j++) {
 				if (this.cells[i][j].getStatus() == 0) {
 					answer = false;
-					break;
 				}
-			}
-			if (!answer) {
-				break;
 			}
 		}
 		return answer && !this.playerLost();
 	}
 
+	/**
+	 * Gets the cell in the specified coordinates.
+	 * @param x int the row of the cell.
+	 * @param y int the column of the cell.
+	 * @return A cell situated in row x, column y.
+	 */
 	public Cell getCell(int x, int y){
 		return this.cells[x][y];
 	}
-
-	// Static Methods
 	
 	/**
 	 * Places mines into random positions on the board.
 	 * @param safeX int is the x coordinate of the first chosen cell.
 	 * @param safeY int is the y coordinate of the first chosen cell.
-	 * @return an array with the coordinates of the mines.
 	 */
 	public void distributeMines (int safeX, int safeY) {
 		// places all mines in random positions
 		// Mines should not be able to exist outside the board
 		int placedMines = 0;
 		int[][] mines = new int[2][this.totalMines];
-		// Now we initialize the values to size (which will never occur naturally). Otherwise the cell (0,0) would always be skipped
+		// Now we initialize the values to -1 (which will never occur naturally). Otherwise the cell (0,0) would always be skipped
 		for (int i = 0; i < mines[0].length; i++) {
-			mines[0][i] = this.size;
-			mines[1][i] = this.size;
+			mines[0][i] = -1;
+			mines[1][i] = -1;
 		}
 		while (placedMines < this.totalMines) {
 			Random rnd = new Random();
@@ -117,43 +128,29 @@ public class Board {
 				}
 			}
 		}
-		Board.updateNeighbours(cells, size);
-		Board.updateSurroundingMines(cells);
+		// It is now a good time to do some housekeeping.
+		this.updateNeighbours();
+		this.updateSurroundingMines();
 	}
 
 	/**
-	 * Given an 2xn array, returns true if a certain pair of number are already on it.
-	 * @param array
-	 * @param x
-	 * @param y
-	 * @return true if and only if the pair of integers already exist in the array.
+	 * Updates all cells' surrounding mines.
 	 */
-	private static boolean alreadyExists(int[][] array, int x, int y) {
-		boolean answer = false;
-		for (int i = 0; i < array[0].length; i++) {
-			if ((array[0][i] == x) && (array[1][i] == y)) {
-				answer = true;
-				break;
-			}
-		}
-		
-		return answer;
-		
-	}
-
-	private static void updateSurroundingMines(Cell[][] cells) {
-		for (int i = 0; i < cells[0].length; i++) {
-			for (int j = 0; j < cells[0].length; j++) {
-				cells[i][j].updateSurroundingMines();
+	private void updateSurroundingMines() {
+		for (int i = 0; i < this.size; i++) {
+			for (int j = 0; j < this.size; j++) {
+				this.cells[i][j].updateSurroundingMines();
 			}
 		}
 	}
 
-	//only to be used once
-	public static void updateNeighbours(Cell[][] cells, int size){
-		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < size; j++) {
-				Cell cell = cells[i][j];
+	/**
+	 * Updates all cell's neighbours. Should only be called once.
+	 */
+	public void updateNeighbours(){
+		for (int i = 0; i < this.size; i++) {
+			for (int j = 0; j < this.size; j++) {
+				Cell cell = this.cells[i][j];
 				for (int x = i -1; x < i +2; x++) {
 					for (int y = j -1; y < j +2; y++) {
 						if (i != x || j != y){
@@ -172,6 +169,24 @@ public class Board {
 	}
 
 	/**
+	 * Given an 2xn array, returns true if a certain pair of number are already on it.
+	 * @param array of integers containing the coordinates of mines.
+	 * @param x is the x-coordinate to be checked.
+	 * @param y is the y-coordinate to be checked.
+	 * @return true if and only if the pair of integers already exist in the array.
+	 */
+	private static boolean alreadyExists(int[][] array, int x, int y) {
+		boolean answer = false;
+		for (int i = 0; i < array[0].length; i++) {
+			if ((array[0][i] == x) && (array[1][i] == y)) {
+				answer = true;
+				break;
+			}
+		}
+		return answer;
+	}
+
+	/**
 	 * Checks that a cell is within the board
 	 * @param x
 	 * @param y
@@ -187,21 +202,4 @@ public class Board {
 			throw new NoSuchCellException();
 		}
 	}
-	
-	// Methods - Getters
-
-	public int getTotalMines() {
-		return totalMines;
-	}
-
-	public int getSize() {
-		return size;
-	}
-	
-	public Cell[][] getCells() {
-		return this.cells;
-	}
-
-
-	
 }

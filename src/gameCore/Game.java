@@ -1,10 +1,13 @@
+package gameCore;
+
 public class Game <T extends API>{
 	private Board board;
 	private T user;
 	private boolean finished;
 	private boolean win;
+	private int round;
 
-	Game(Board board, T user){
+	public Game(Board board, T user){
 		this.board = board;
 		this.user = user;
 		user.showBoard();
@@ -13,6 +16,7 @@ public class Game <T extends API>{
 		board.getCell(first.getPositionX(), first.getPositionY()).reveal();
 		this.finished = false;
 		this.win = false;
+		this.round = 0;
 	}
 
 	public void play(){
@@ -37,6 +41,7 @@ public class Game <T extends API>{
 							break;
 					}
 					isActionCorrect = true;
+					this.round++;
 				}
 				else {
 					System.out.println("Incorrect Action");

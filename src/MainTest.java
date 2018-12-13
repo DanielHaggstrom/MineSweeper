@@ -1,3 +1,5 @@
+import gameCore.Board;
+import gameCore.Game;
 
 public class MainTest {
 
@@ -9,7 +11,7 @@ public class MainTest {
 		Board board = new Board(size, mines);
 		//User user = new User(board);
 		GraphUser user = new GraphUser(board);
-		//Game<User> game = new Game<>(board, user);
+		//gameCore.Game<User> game = new gameCore.Game<>(board, user);
 		Game<GraphUser> game = new Game<>(board, user);
 		game.play();
 		if (game.winner()){
@@ -18,29 +20,5 @@ public class MainTest {
 		else {
 			System.out.println("Boo!");
 		}
-	}
-
-
-	public static void checkStatus(Board board){
-		int hidden = 0;
-		int flagged = 0;
-		int shown = 0;
-		for (int i = 0; i < board.getSize(); i++) {
-			for (int j = 0; j < board.getSize(); j++) {
-				Cell cell = board.getCells()[i][j];
-				switch (cell.getStatus()){
-					case 0:
-						hidden++;
-						break;
-					case 1:
-						flagged++;
-						break;
-					case 2:
-						shown++;
-						break;
-				}
-			}
-		}
-		System.out.println("Hidden "+ hidden +" | Flagged: "+ flagged +" | Shown: "+ shown);
 	}
 }

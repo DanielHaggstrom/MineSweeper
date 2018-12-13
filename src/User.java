@@ -1,7 +1,12 @@
+import gameCore.API;
+import gameCore.Board;
+import gameCore.Cell;
+import gameCore.NoSuchCellException;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class User implements API{
+public class User implements API {
 
 	private Board board;
 

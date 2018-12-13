@@ -1,3 +1,5 @@
+package gameCore;
+
 public interface API {
 
 	/**

@@ -1,16 +1,24 @@
 package gameCore;
 
 public class Game <T extends API>{
+
+	// Attributes
 	private Board board;
 	private T user;
 	private boolean finished;
 	private boolean win;
 	private int round;
 
+	/**
+	 * Constructs a new game.
+	 * @param board the board in which the game is played.
+	 * @param user the user that will play the game. Must implement API.
+	 */
 	public Game(Board board, T user){
 		this.board = board;
 		this.user = user;
 		user.showBoard();
+		user.showTrueBoard();
 		Cell first = user.firstCell();
 		board.distributeMines(first.getPositionX(), first.getPositionY());
 		board.getCell(first.getPositionX(), first.getPositionY()).reveal();
@@ -19,11 +27,14 @@ public class Game <T extends API>{
 		this.round = 0;
 	}
 
+	/**
+	 * Plays the game until the player either wins or loses.
+	 */
 	public void play(){
+		user.showBoard();
+		user.showTrueBoard();//debug
+		Game.checkStatus(board);
 		while (!finished){
-			user.showBoard();
-			user.showTrueBoard();//debug
-			Game.checkStatus(board);
 			boolean isActionCorrect = false;
 			while (!isActionCorrect){
 				Cell selectedCell = user.selectCell();
@@ -52,14 +63,35 @@ public class Game <T extends API>{
 						this.win = true;
 					}
 				}
+				user.showBoard();
+				user.showTrueBoard();//debug
+				Game.checkStatus(board);
 			}
+			this.round++;
 		}
 	}
+
+	/**
+	 * Checks if the player won.
+	 * @return true if and only if the player won.
+	 */
 	public boolean winner(){
 		return this.win;
 	}
 
-	public static void checkStatus(Board board){
+	/**
+	 * Getter for round number
+	 * @return the round number.
+	 */
+	public int getRound(){
+		return this.round;
+	}
+
+	/**
+	 * Debugging info.
+	 * @param board the board to be debugged
+	 */
+	private static void checkStatus(Board board){
 		int hidden = 0;
 		int flagged = 0;
 		int shown = 0;
@@ -84,5 +116,18 @@ public class Game <T extends API>{
 			}
 		}
 		System.out.println("Hidden "+ hidden +" | Flagged: "+ flagged +" | Shown: "+ shown +" | Mines: " + mines);
+	}
+
+	public Game(Board board, T user, int x, int y){
+		this.board = board;
+		this.user = user;
+		user.showBoard();
+		user.showTrueBoard();
+		Cell first = board.getCell(x, y);
+		board.distributeMines(first.getPositionX(), first.getPositionY());
+		board.getCell(first.getPositionX(), first.getPositionY()).reveal();
+		this.finished = false;
+		this.win = false;
+		this.round = 0;
 	}
 }

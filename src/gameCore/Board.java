@@ -50,7 +50,7 @@ public class Board {
 	 * Checks if the game is over.
 	 * @return True if the player revealed a mine or if there are no more blank cells. False otherwise.
 	 */
-	public boolean isGameFinished() {
+	boolean isGameFinished() {
 		return this.playerLost() || this.playerWon();
 	}
 	
@@ -202,4 +202,5 @@ public class Board {
 			throw new NoSuchCellException();
 		}
 	}
+
 }

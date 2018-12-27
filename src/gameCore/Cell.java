@@ -81,7 +81,7 @@ public class Cell {
 	/**
 	 * Shows the information about the cell available to the user.
 	 * @return an array of two integers. The first first one describes the cell's status,
-	 * except if a revealed cell is also a mine. In that case, it is 4. The second number is -1,
+	 * except if a revealed cell is also a mine. In that case, it is 3. The second number is -1,
 	 * except if the cell is a revealed non-mine cell. Then it is the number of surrounding cells.
 	 */
 	public int[] display(){
@@ -95,12 +95,22 @@ public class Cell {
 		}
 		if (this.status == 2){
 			if (this.mine){
-				answer[0] = 4;;//revealed mine
+				answer[0] = 3;;//revealed mine
 			}
 			else {
-				answer[0] = 3;
+				answer[0] = 2;
 				answer[1] = this.surroundingMines;//revealed cell
 			}
+		}
+		return answer;
+	}
+
+	public int[] trueDisplay(){
+		int[] answer = new int[2];
+		answer[1] = this.surroundingMines;
+		if (this.mine){
+			answer[0] = 4;//mine
+			return answer;
 		}
 		return answer;
 	}

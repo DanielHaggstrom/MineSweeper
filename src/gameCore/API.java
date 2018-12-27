@@ -30,5 +30,9 @@ public interface API {
 	 */
 	public int action();
 
-
+	/**
+	 * Receives the round number.
+	 * @param round integer.
+	 */
+	public void receiveRound(int round);
 }

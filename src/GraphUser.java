@@ -97,7 +97,7 @@ public class GraphUser extends JFrame implements API {
 	public Cell selectCell() {
 		while (!this.listener.getAuxButton()){
 			try {
-				Thread.sleep(100);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -153,7 +153,11 @@ public class GraphUser extends JFrame implements API {
 				JButton button = this.btnCells[i][j];
 				int[] display = cell.display();
 				if (display[0] == 0){
-					// do nothing
+					// hidden
+					button.setForeground(FGCOLOR_NOT_REVEALED);
+					button.setBackground(BGCOLOR_NOT_REVEALED);
+					button.setFont(FONT_NUMBERS);
+					button.setText("");       // display blank
 				}
 				if (display[0] == 1){
 					//flagged

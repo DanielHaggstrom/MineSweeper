@@ -6,8 +6,8 @@ public class MainTest {
 	public static void main(String[] args) {
 		// this main is for testing purposes
 
-		int size = 8;
-		int mines = 4;
+		int size = 9;
+		int mines = 9;
 		Board board = new Board(size, mines);
 		//User user = new User(board);
 		GraphUser user = new GraphUser(board);

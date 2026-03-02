@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public class GraphUser extends JFrame implements API {
 	// constants & attributes
-	private static int CELL_SIZE = 60;  // gameCore.Cell width and height, in pixel
+	private static final int CELL_SIZE = 60;  // gameCore.Cell width and height, in pixel
 	private static Color BGCOLOR_NOT_REVEALED;
 	private static Color FGCOLOR_NOT_REVEALED;    // flag
 	private static Color BGCOLOR_REVEALED;
@@ -55,7 +55,7 @@ public class GraphUser extends JFrame implements API {
 		pack();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // handle window-close button
-		setTitle("Mineswepper");
+		setTitle("Minesweeper");
 		setVisible(true);   // show it
 
 	}
@@ -65,9 +65,8 @@ public class GraphUser extends JFrame implements API {
 	 */
 	@Override
 	public void showBoard() {//actually updates the board window
-		setVisible(false);
 		this.updateGraphUser();
-		setVisible(true);
+		repaint();
 	}
 
 	/**
@@ -115,25 +114,18 @@ public class GraphUser extends JFrame implements API {
 	 */
 	@Override
 	public int action() {
-		int x = this.listener.getAuxCell()[0];
-		int y = this.listener.getAuxCell()[1];
-		Cell cell = this.board.getCell(x, y);
+		Cell cell = this.board.getCell(this.listener.getAuxCell()[0], this.listener.getAuxCell()[1]);
 		int[] status = cell.display();
-		while (true){
-			if (this.listener.isClick()){
-				if (status[0] == 0){// reveal a hidden cell
-					return 2;
-				}
-			}
-			else {
-				if (status[0] == 0){// flag
-					return 1;
-				}
-				if (status[0] == 1){// unflag
-					return 0;
-				}
-			}
+		if (this.listener.isClick()) {
+			return status[0] == 0 ? 2 : -1;
 		}
+		if (status[0] == 0) {
+			return 1;
+		}
+		if (status[0] == 1) {
+			return 0;
+		}
+		return -1;
 	}
 
 	/**
@@ -228,7 +220,6 @@ public class GraphUser extends JFrame implements API {
 						this.auxCell[0] = row;
 						this.auxCell[1] = col;
 						this.auxButton = true;
-						System.out.println("row: "+ row +", col: "+ col);
 						found = true;   // break both inner/outer loops
 					}
 				}

@@ -1,2 +1,8 @@
+.idea/
+.settings/
+bin/
+out/
 
-bin/README
+.classpath
+.project
+*.iml

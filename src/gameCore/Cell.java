@@ -95,7 +95,7 @@ public class Cell {
 		}
 		if (this.status == 2){
 			if (this.mine){
-				answer[0] = 3;;//revealed mine
+				answer[0] = 3;//revealed mine
 			}
 			else {
 				answer[0] = 2;
@@ -216,9 +216,6 @@ public class Cell {
 			Cell neighbour = this.neighbours.get(i);
 			if (neighbour.getStatus() == 0){
 				neighbour.reveal();
-				if (neighbour.getSurroundingMines() == 0){
-					neighbour.autoReveal();
-				}
 			}
 		}
 	}

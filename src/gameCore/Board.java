@@ -17,10 +17,11 @@ public class Board {
 	 * @param totalMines int the amount of mines.
 	 */
 	public Board(int size, int totalMines) {
-		// First, a sanity check that the number of mines makes sense
-		if ((totalMines <= 0) || (totalMines >= size*size)) {
-			System.out.println("totalMines is not valid");
-			System.exit(1);
+		if (size <= 0) {
+			throw new IllegalArgumentException("size must be greater than 0");
+		}
+		if ((totalMines <= 0) || (totalMines >= size * size)) {
+			throw new IllegalArgumentException("totalMines must be between 1 and size^2 - 1");
 		}
 		this.size = size;
 		this.totalMines = totalMines;
@@ -75,15 +76,15 @@ public class Board {
 	 * @return True if there are no more blank cells and the player did not lose.
 	 */
 	public boolean playerWon() {
-		boolean answer = true;
-		for (int i = 0; i < size && answer; i++) {
-			for (int j = 0; j < size && answer; j++) {
-				if (this.cells[i][j].getStatus() == 0) {
-					answer = false;
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				Cell cell = this.cells[i][j];
+				if (!cell.isMine() && cell.getStatus() != 2) {
+					return false;
 				}
 			}
 		}
-		return answer && !this.playerLost();
+		return !this.playerLost();
 	}
 
 	/**
@@ -106,13 +107,13 @@ public class Board {
 		// Mines should not be able to exist outside the board
 		int placedMines = 0;
 		int[][] mines = new int[2][this.totalMines];
+		Random rnd = new Random();
 		// Now we initialize the values to -1 (which will never occur naturally). Otherwise the cell (0,0) would always be skipped
 		for (int i = 0; i < mines[0].length; i++) {
 			mines[0][i] = -1;
 			mines[1][i] = -1;
 		}
 		while (placedMines < this.totalMines) {
-			Random rnd = new Random();
 			int x = rnd.nextInt(this.size);
 			int y = rnd.nextInt(this.size);
 			if (!Board.alreadyExists(mines, x, y) && ((x != safeX) || (y != safeY))) {

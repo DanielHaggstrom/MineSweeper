@@ -17,14 +17,13 @@ public class Game <T extends API>{
 	public Game(Board board, T user){
 		this.board = board;
 		this.user = user;
-		user.showBoard();
-		user.showTrueBoard();
 		Cell first = user.firstCell();
 		board.distributeMines(first.getPositionX(), first.getPositionY());
 		board.getCell(first.getPositionX(), first.getPositionY()).reveal();
 		this.finished = false;
 		this.win = false;
 		this.round = 0;
+		user.receiveRound(this.round);
 	}
 
 	/**
@@ -32,8 +31,7 @@ public class Game <T extends API>{
 	 */
 	public void play(){
 		user.showBoard();
-		user.showTrueBoard();//debug
-		Game.checkStatus(board);
+		user.showTrueBoard();
 		while (!finished){
 			boolean isActionCorrect = false;
 			while (!isActionCorrect){
@@ -53,6 +51,7 @@ public class Game <T extends API>{
 					}
 					isActionCorrect = true;
 					this.round++;
+					user.receiveRound(this.round);
 				}
 				else {
 					System.out.println("Incorrect Action");
@@ -64,10 +63,8 @@ public class Game <T extends API>{
 					}
 				}
 				user.showBoard();
-				user.showTrueBoard();//debug
-				Game.checkStatus(board);
+				user.showTrueBoard();
 			}
-			this.round++;
 		}
 	}
 
@@ -87,47 +84,15 @@ public class Game <T extends API>{
 		return this.round;
 	}
 
-	/**
-	 * Debugging info.
-	 * @param board the board to be debugged
-	 */
-	private static void checkStatus(Board board){
-		int hidden = 0;
-		int flagged = 0;
-		int shown = 0;
-		int mines = 0;
-		for (int i = 0; i < board.getSize(); i++) {
-			for (int j = 0; j < board.getSize(); j++) {
-				Cell cell = board.getCells()[i][j];
-				if (cell.isMine()){
-					mines++;
-				}
-				switch (cell.getStatus()){
-					case 0:
-						hidden++;
-						break;
-					case 1:
-						flagged++;
-						break;
-					case 2:
-						shown++;
-						break;
-				}
-			}
-		}
-		System.out.println("Hidden "+ hidden +" | Flagged: "+ flagged +" | Shown: "+ shown +" | Mines: " + mines);
-	}
-
 	public Game(Board board, T user, int x, int y){
 		this.board = board;
 		this.user = user;
-		user.showBoard();
-		user.showTrueBoard();
 		Cell first = board.getCell(x, y);
 		board.distributeMines(first.getPositionX(), first.getPositionY());
 		board.getCell(first.getPositionX(), first.getPositionY()).reveal();
 		this.finished = false;
 		this.win = false;
 		this.round = 0;
+		user.receiveRound(this.round);
 	}
 }

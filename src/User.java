@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class User implements API {
 
+	private static final Scanner INPUT = new Scanner(System.in);
 	private Board board;
 
 	User(Board board){
@@ -102,8 +103,7 @@ public class User implements API {
 			}
 			System.out.println();
 			try {
-				Scanner sc = new Scanner(System.in);
-				answer = sc.nextInt();
+				answer = INPUT.nextInt();
 				if ((answer > 0) && (answer < s.length)) {
 					correct = true;
 				}
@@ -112,6 +112,7 @@ public class User implements API {
 				}
 			}
 			catch (InputMismatchException ex) {
+				INPUT.nextLine();
 				System.out.println("Invalid Selection.");
 			}
 		}
@@ -171,8 +172,7 @@ public class User implements API {
 		while(!correct) {
 			System.out.println("Input "+ s +"-coordinate.");
 			try {
-				Scanner sc = new Scanner(System.in);
-				int coordinate = sc.nextInt();
+				int coordinate = INPUT.nextInt();
 				try {
 					Board.checkCell(coordinate, 0, this.board.getSize());
 					correct = true;
@@ -183,6 +183,7 @@ public class User implements API {
 				}
 			}
 			catch (InputMismatchException ex) {
+				INPUT.nextLine();
 				System.out.println("Invalid Selection.");
 			}
 		}
